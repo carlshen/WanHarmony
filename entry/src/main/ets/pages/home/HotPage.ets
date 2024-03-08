@@ -131,6 +131,7 @@ struct Banner {
     }
     .width('100%')
     .padding(10)
+    .loop(false)
     .autoPlay(true)
     .interval(2000)
     .visibility(this.bannerList.length > 0 ? Visibility.Visible : Visibility.Hidden)
