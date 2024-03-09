@@ -13,6 +13,7 @@ import { QaCommentEntity } from '../model/entity/QaCommnetEntity';
 export const DOMAIN = 0x0001
 
 export const TAG = "net"
+export const UseAsync = true
 
 export const axiosInstance = axios.create({
   baseURL: 'https://www.wanandroid.com',
@@ -36,6 +37,20 @@ export function getBanner(): Promise<BannerEntity[]> {
     })
   })
 }
+export async function getBannerAsync(): Promise<BannerEntity[]> {
+  try {
+    let res = await axiosInstance.get<WanResponse<BannerEntity[]>, AxiosResponse<WanResponse<BannerEntity[]>>, null>('/banner/json');
+    if (res.data.errorCode == 0) {
+      Log.info("getBannerAsync success")
+      return (res.data.data);
+    } else {
+      return new BannerEntity[0];
+    }
+  } catch (error) {
+    Log.error("getBannerAsync error")
+    return error;
+  }
+}
 
 /**
  * 获取首页文章列表
@@ -53,6 +68,20 @@ export function getArticleList(pageNumber: number): Promise<ArticleEntity[]> {
       reject(err)
     })
   })
+}
+export async function getArticleListAsync(pageNumber: number): Promise<ArticleEntity[]> {
+  try {
+    let res = await axiosInstance.get<WanResponse<PageData<ArticleEntity>>, AxiosResponse<WanResponse<PageData<ArticleEntity>>>, null>(`/article/list/${pageNumber}/json`);
+    if (res.data.errorCode == 0) {
+      Log.info("getArticleListAsync success")
+      return res.data.data.datas;
+    } else {
+      return new ArticleEntity[0];
+    }
+  } catch (error) {
+    Log.error("getArticleListAsync error")
+    return error;
+  }
 }
 
 /**
@@ -74,6 +103,23 @@ export function getTopArticleList(): Promise<ArticleEntity[]> {
       reject(err)
     })
   })
+}
+export async function getTopArticleListAsync(): Promise<ArticleEntity[]> {
+  try {
+    let res = await axiosInstance.get<WanResponse<ArticleEntity[]>, AxiosResponse<WanResponse<ArticleEntity[]>>, null>('/article/top/json');
+    if (res.data.errorCode == 0) {
+      Log.info("getTopArticleListAsync success")
+      return res.data.data.map((value) => {
+        value.top = true
+        return value
+      });
+    } else {
+      return new ArticleEntity[0];
+    }
+  } catch (error) {
+    Log.error("getTopArticleListAsync error")
+    return error;
+  }
 }
 
 /**

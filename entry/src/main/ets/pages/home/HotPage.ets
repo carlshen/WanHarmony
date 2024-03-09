@@ -1,4 +1,10 @@
-import { DOMAIN, getArticleList, getBanner, getTopArticleList, TAG } from '../../viewmodel/Net'
+import { DOMAIN, getArticleList,
+  getArticleListAsync,
+  getBanner,
+  getBannerAsync,
+  getTopArticleList,
+  getTopArticleListAsync,
+  TAG, UseAsync } from '../../viewmodel/Net'
 import hilog from '@ohos.hilog'
 import { BannerEntity } from '../../model/entity/BannerEntity'
 import Log from '../../utils/Log'
@@ -69,6 +75,15 @@ export struct HotPage {
     return new Promise((resolve, reject) => {
       this.articleList = []
       this.pageNumber = 0
+      if (UseAsync) {
+        getArticleListAsync(this.pageNumber).then((list: ArticleEntity[]) => {
+          this.articleList = this.articleList.concat(list)
+          resolve('刷新成功')
+        }).catch((err: Error) => {
+          Log.error('getArticleListAsync failed', err.message)
+          resolve('刷新失败')
+        })
+      } else
       getArticleList(this.pageNumber).then((list: ArticleEntity[]) => {
         this.articleList = this.articleList.concat(list)
         resolve('刷新成功')
@@ -77,6 +92,16 @@ export struct HotPage {
         resolve('刷新失败')
       })
 
+      if (UseAsync) {
+        getTopArticleListAsync().then((list: ArticleEntity[]) => {
+          let result: ArticleEntity[] = []
+          result = result.concat(list)
+          result = result.concat(this.articleList)
+          this.articleList = result
+        }).catch((err: Error) => {
+          Log.error('getTopArticleListAsync failed', err.message)
+        })
+      } else
       getTopArticleList().then((list: ArticleEntity[]) => {
         let result: ArticleEntity[] = []
         result = result.concat(list)
@@ -91,6 +116,15 @@ export struct HotPage {
   loadMore(): Promise<string> {
     return new Promise((resolve, reject) => {
       this.pageNumber++
+      if (UseAsync) {
+        getArticleListAsync(this.pageNumber).then((list: ArticleEntity[]) => {
+          this.articleList = this.articleList.concat(list)
+          resolve('加载成功')
+        }).catch((err: Error) => {
+          reject('加载失败')
+          Log.error('getArticleListAsync failed', err.message)
+        })
+      } else
       getArticleList(this.pageNumber).then((list: ArticleEntity[]) => {
         this.articleList = this.articleList.concat(list)
         resolve('加载成功')
@@ -102,6 +136,13 @@ export struct HotPage {
   }
 
   getBannerData() {
+    if (UseAsync) {
+      getBannerAsync().then((list: BannerEntity[]) => {
+        this.bannerList = list
+      }).catch((err: Error) => {
+        Log.error('getBannerAsync failed', err.message)
+      })
+    } else
     getBanner().then((list: BannerEntity[]) => {
       this.bannerList = list
     }).catch((err: Error) => {
