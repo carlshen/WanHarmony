@@ -1,12 +1,20 @@
 import router from '@ohos.router'
 import { TutorialEntity } from '../../model/entity/TutorialEntity'
-import { getTutorialData } from '../../viewmodel/Net'
+import Log from '../../utils/Log'
+import { getTutorialData, getTutorialDataAsync, UseAsync } from '../../viewmodel/Net'
 
 @Component
 export struct TutorialPage {
   @State tutorialData: TutorialEntity[] = []
 
   aboutToAppear() {
+    if (UseAsync) {
+      getTutorialDataAsync().then((data: TutorialEntity[]) => {
+        this.tutorialData = data
+      }).catch((err: Error) => {
+        Log.error('getTutorialDataAsync failed', err.message)
+      })
+    } else
     getTutorialData().then((data: TutorialEntity[]) => {
       this.tutorialData = data
     })

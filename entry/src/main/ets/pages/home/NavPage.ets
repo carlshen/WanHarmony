@@ -1,9 +1,10 @@
 import router from '@ohos.router'
 import { ArticleEntity } from '../../model/entity/ArticleEntity'
 import { NavData } from '../../model/entity/NavData'
-import { getNavigationData } from '../../viewmodel/Net'
+import { getNavigationData, getNavigationDataAsync, UseAsync } from '../../viewmodel/Net'
 import { FlowLayout, FlowLayoutConfig } from '@luyao/flowlayout'
 import { jumpToWeb } from '../../utils/Common'
+import Log from '../../utils/Log'
 
 @Component
 export struct NavPage {
@@ -13,6 +14,13 @@ export struct NavPage {
   private rightScroller: Scroller = new Scroller()
 
   aboutToAppear() {
+    if (UseAsync) {
+      getNavigationDataAsync().then((data: NavData[]) => {
+        this.navData = data
+      }).catch((err: Error) => {
+        Log.error('getNavigationDataAsync failed', err.message)
+      })
+    } else
     getNavigationData().then((data: NavData[]) => {
       this.navData = data
     })

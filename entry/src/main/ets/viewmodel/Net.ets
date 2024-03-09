@@ -140,6 +140,20 @@ export function getSquareArticleList(pageNumber: number): Promise<ArticleEntity[
     })
   })
 }
+export async function getSquareArticleListAsync(pageNumber: number): Promise<ArticleEntity[]> {
+  try {
+    let res = await axiosInstance.get<WanResponse<PageData<ArticleEntity>>, AxiosResponse<WanResponse<PageData<ArticleEntity>>>, null>(`/user_article/list/${pageNumber}/json`);
+    if (res.data.errorCode == 0) {
+      Log.info("getSquareArticleListAsync success")
+      return res.data.data.datas;
+    } else {
+      return new ArticleEntity[0];
+    }
+  } catch (error) {
+    Log.error("getSquareArticleListAsync error")
+    return error;
+  }
+}
 
 /**
  * 获取导航数据
@@ -159,6 +173,20 @@ export function getNavigationData(): Promise<NavData[]> {
       reject(err)
     })
   })
+}
+export async function getNavigationDataAsync(): Promise<NavData[]> {
+  try {
+    let res = await axiosInstance.get<WanResponse<NavData[]>, AxiosResponse<WanResponse<NavData[]>>, null>('/navi/json');
+    if (res.data.errorCode == 0) {
+      Log.info("getNavigationDataAsync success")
+      return res.data.data;
+    } else {
+      return new NavData[0];
+    }
+  } catch (error) {
+    Log.error("getNavigationDataAsync error")
+    return error;
+  }
 }
 
 /*
@@ -180,6 +208,20 @@ export function getTutorialData(): Promise<TutorialEntity[]> {
       })
   })
 }
+export async function getTutorialDataAsync(): Promise<TutorialEntity[]> {
+  try {
+    let res = await axiosInstance.get<WanResponse<TutorialEntity[]>, AxiosResponse<WanResponse<TutorialEntity[]>>, null>('/chapter/547/sublist/json');
+    if (res.data.errorCode == 0) {
+      Log.info("getTutorialDataAsync success")
+      return res.data.data;
+    } else {
+      return new TutorialEntity[0];
+    }
+  } catch (error) {
+    Log.error("getTutorialDataAsync error")
+    return error;
+  }
+}
 
 /**
  * 获取单个教程的内容目录
@@ -199,6 +241,20 @@ export function getTutorialDetailData(tutorialId: number): Promise<ArticleEntity
         reject(err)
       })
   })
+}
+export async function getTutorialDetailDataAsync(tutorialId: number): Promise<ArticleEntity[]> {
+  try {
+    let res = await axiosInstance.get<WanResponse<PageData<ArticleEntity>>, AxiosResponse<WanResponse<PageData<ArticleEntity>>>, null>(`/article/list/0/json?cid=${tutorialId}&order_type=1`);
+    if (res.data.errorCode == 0) {
+      Log.info("getTutorialDetailDataAsync success")
+      return res.data.data.datas;
+    } else {
+      return new ArticleEntity[0];
+    }
+  } catch (error) {
+    Log.error("getTutorialDetailDataAsync error")
+    return error;
+  }
 }
 
 export function getUtilData(): Promise<UtilEntity[]> {
