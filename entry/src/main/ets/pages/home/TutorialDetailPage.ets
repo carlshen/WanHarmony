@@ -2,8 +2,9 @@ import router from '@ohos.router'
 import { ArticleEntity } from '../../model/entity/ArticleEntity'
 import { TutorialEntity } from '../../model/entity/TutorialEntity'
 import { jumpToWeb } from '../../utils/Common'
-import Log from '../../utils/Log'
-import { getTutorialDetailData, getTutorialDetailDataAsync, UseAsync } from '../../viewmodel/Net'
+import { getTutorialDetailData } from '../../viewmodel/Net'
+import { getTutorialDetailDataAsync, UseAsync } from '../../viewmodel/apiService'
+import { LogUtils } from '../../utils/LogUtils'
 import { TitleComponent } from '../TitleComponent'
 
 const tutorialEntity = router.getParams() as TutorialEntity
@@ -19,7 +20,7 @@ export struct TutorialDetailPage {
         .then((data: ArticleEntity[]) => {
           this.tutorialData = data
         }).catch((err: Error) => {
-        Log.error("getTutorialDetailDataAsync failed " + err.message)
+        LogUtils.error("getTutorialDetailDataAsync failed " + err.message)
       })
     } else
     getTutorialDetailData(tutorialEntity.id)

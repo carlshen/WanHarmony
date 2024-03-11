@@ -2,7 +2,9 @@ import { ArticleEntity } from '../../model/entity/ArticleEntity';
 import { ArticleView } from '../ArticleView';
 import { PullToRefresh } from '@ohos/pulltorefresh';
 import Log from '../../utils/Log';
-import { getSquareArticleList, getSquareArticleListAsync, UseAsync } from '../../viewmodel/Net';
+import { getSquareArticleList } from '../../viewmodel/Net';
+import { getSquareArticleListAsync, UseAsync } from '../../viewmodel/apiService';
+import { LogUtils } from '../../utils/LogUtils'
 import { jumpToWeb } from '../../utils/Common';
 
 @Component
@@ -65,7 +67,7 @@ export struct SquarePage {
           this.articleList = this.articleList.concat(list)
           resolve('刷新成功')
         }).catch((err: Error) => {
-          Log.error('getSquareArticleListAsync failed', err.message)
+          LogUtils.error('getSquareArticleListAsync failed', err.message)
           resolve('刷新失败')
         })
       } else
@@ -88,7 +90,7 @@ export struct SquarePage {
           resolve('加载成功')
         }).catch((err: Error) => {
           reject('加载失败')
-          Log.error('getSquareArticleListAsync failed', err.message)
+          LogUtils.error('getSquareArticleListAsync failed', err.message)
         })
       } else
       getSquareArticleList(this.pageNumber).then((list: ArticleEntity[]) => {

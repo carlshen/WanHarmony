@@ -1,10 +1,6 @@
-import { DOMAIN, getArticleList,
-  getArticleListAsync,
-  getBanner,
-  getBannerAsync,
-  getTopArticleList,
-  getTopArticleListAsync,
-  TAG, UseAsync } from '../../viewmodel/Net'
+import { DOMAIN, getArticleList, getBanner, getTopArticleList, TAG } from '../../viewmodel/Net'
+import { getArticleListAsync, getTopArticleListAsync, getBannerAsync, UseAsync } from '../../viewmodel/apiService'
+import { LogUtils } from '../../utils/LogUtils'
 import hilog from '@ohos.hilog'
 import { BannerEntity } from '../../model/entity/BannerEntity'
 import Log from '../../utils/Log'
@@ -80,7 +76,7 @@ export struct HotPage {
           this.articleList = this.articleList.concat(list)
           resolve('刷新成功')
         }).catch((err: Error) => {
-          Log.error('getArticleListAsync failed', err.message)
+          LogUtils.error('getArticleListAsync failed', err.message)
           resolve('刷新失败')
         })
       } else
@@ -99,7 +95,7 @@ export struct HotPage {
           result = result.concat(this.articleList)
           this.articleList = result
         }).catch((err: Error) => {
-          Log.error('getTopArticleListAsync failed', err.message)
+          LogUtils.error('getTopArticleListAsync failed', err.message)
         })
       } else
       getTopArticleList().then((list: ArticleEntity[]) => {
@@ -122,7 +118,7 @@ export struct HotPage {
           resolve('加载成功')
         }).catch((err: Error) => {
           reject('加载失败')
-          Log.error('getArticleListAsync failed', err.message)
+          LogUtils.error('getArticleListAsync failed', err.message)
         })
       } else
       getArticleList(this.pageNumber).then((list: ArticleEntity[]) => {
@@ -140,7 +136,7 @@ export struct HotPage {
       getBannerAsync().then((list: BannerEntity[]) => {
         this.bannerList = list
       }).catch((err: Error) => {
-        Log.error('getBannerAsync failed', err.message)
+        LogUtils.error('getBannerAsync failed', err.message)
       })
     } else
     getBanner().then((list: BannerEntity[]) => {

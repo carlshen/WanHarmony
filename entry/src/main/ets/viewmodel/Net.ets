@@ -13,7 +13,6 @@ import { QaCommentEntity } from '../model/entity/QaCommnetEntity';
 export const DOMAIN = 0x0001
 
 export const TAG = "net"
-export const UseAsync = true
 
 export const axiosInstance = axios.create({
   baseURL: 'https://www.wanandroid.com',
@@ -37,20 +36,6 @@ export function getBanner(): Promise<BannerEntity[]> {
     })
   })
 }
-export async function getBannerAsync(): Promise<BannerEntity[]> {
-  try {
-    let res = await axiosInstance.get<WanResponse<BannerEntity[]>, AxiosResponse<WanResponse<BannerEntity[]>>, null>('/banner/json');
-    if (res.data.errorCode == 0) {
-      Log.info("getBannerAsync success")
-      return (res.data.data);
-    } else {
-      return new BannerEntity[0];
-    }
-  } catch (error) {
-    Log.error("getBannerAsync error")
-    return error;
-  }
-}
 
 /**
  * 获取首页文章列表
@@ -68,20 +53,6 @@ export function getArticleList(pageNumber: number): Promise<ArticleEntity[]> {
       reject(err)
     })
   })
-}
-export async function getArticleListAsync(pageNumber: number): Promise<ArticleEntity[]> {
-  try {
-    let res = await axiosInstance.get<WanResponse<PageData<ArticleEntity>>, AxiosResponse<WanResponse<PageData<ArticleEntity>>>, null>(`/article/list/${pageNumber}/json`);
-    if (res.data.errorCode == 0) {
-      Log.info("getArticleListAsync success")
-      return res.data.data.datas;
-    } else {
-      return new ArticleEntity[0];
-    }
-  } catch (error) {
-    Log.error("getArticleListAsync error")
-    return error;
-  }
 }
 
 /**
@@ -104,23 +75,6 @@ export function getTopArticleList(): Promise<ArticleEntity[]> {
     })
   })
 }
-export async function getTopArticleListAsync(): Promise<ArticleEntity[]> {
-  try {
-    let res = await axiosInstance.get<WanResponse<ArticleEntity[]>, AxiosResponse<WanResponse<ArticleEntity[]>>, null>('/article/top/json');
-    if (res.data.errorCode == 0) {
-      Log.info("getTopArticleListAsync success")
-      return res.data.data.map((value) => {
-        value.top = true
-        return value
-      });
-    } else {
-      return new ArticleEntity[0];
-    }
-  } catch (error) {
-    Log.error("getTopArticleListAsync error")
-    return error;
-  }
-}
 
 /**
  * 获取广场文章列表
@@ -139,20 +93,6 @@ export function getSquareArticleList(pageNumber: number): Promise<ArticleEntity[
       reject(err)
     })
   })
-}
-export async function getSquareArticleListAsync(pageNumber: number): Promise<ArticleEntity[]> {
-  try {
-    let res = await axiosInstance.get<WanResponse<PageData<ArticleEntity>>, AxiosResponse<WanResponse<PageData<ArticleEntity>>>, null>(`/user_article/list/${pageNumber}/json`);
-    if (res.data.errorCode == 0) {
-      Log.info("getSquareArticleListAsync success")
-      return res.data.data.datas;
-    } else {
-      return new ArticleEntity[0];
-    }
-  } catch (error) {
-    Log.error("getSquareArticleListAsync error")
-    return error;
-  }
 }
 
 /**
@@ -174,20 +114,6 @@ export function getNavigationData(): Promise<NavData[]> {
     })
   })
 }
-export async function getNavigationDataAsync(): Promise<NavData[]> {
-  try {
-    let res = await axiosInstance.get<WanResponse<NavData[]>, AxiosResponse<WanResponse<NavData[]>>, null>('/navi/json');
-    if (res.data.errorCode == 0) {
-      Log.info("getNavigationDataAsync success")
-      return res.data.data;
-    } else {
-      return new NavData[0];
-    }
-  } catch (error) {
-    Log.error("getNavigationDataAsync error")
-    return error;
-  }
-}
 
 /*
  * 获取教程目录
@@ -208,20 +134,6 @@ export function getTutorialData(): Promise<TutorialEntity[]> {
       })
   })
 }
-export async function getTutorialDataAsync(): Promise<TutorialEntity[]> {
-  try {
-    let res = await axiosInstance.get<WanResponse<TutorialEntity[]>, AxiosResponse<WanResponse<TutorialEntity[]>>, null>('/chapter/547/sublist/json');
-    if (res.data.errorCode == 0) {
-      Log.info("getTutorialDataAsync success")
-      return res.data.data;
-    } else {
-      return new TutorialEntity[0];
-    }
-  } catch (error) {
-    Log.error("getTutorialDataAsync error")
-    return error;
-  }
-}
 
 /**
  * 获取单个教程的内容目录
@@ -241,20 +153,6 @@ export function getTutorialDetailData(tutorialId: number): Promise<ArticleEntity
         reject(err)
       })
   })
-}
-export async function getTutorialDetailDataAsync(tutorialId: number): Promise<ArticleEntity[]> {
-  try {
-    let res = await axiosInstance.get<WanResponse<PageData<ArticleEntity>>, AxiosResponse<WanResponse<PageData<ArticleEntity>>>, null>(`/article/list/0/json?cid=${tutorialId}&order_type=1`);
-    if (res.data.errorCode == 0) {
-      Log.info("getTutorialDetailDataAsync success")
-      return res.data.data.datas;
-    } else {
-      return new ArticleEntity[0];
-    }
-  } catch (error) {
-    Log.error("getTutorialDetailDataAsync error")
-    return error;
-  }
 }
 
 export function getUtilData(): Promise<UtilEntity[]> {

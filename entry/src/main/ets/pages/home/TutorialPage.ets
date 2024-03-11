@@ -1,7 +1,8 @@
 import router from '@ohos.router'
 import { TutorialEntity } from '../../model/entity/TutorialEntity'
-import Log from '../../utils/Log'
-import { getTutorialData, getTutorialDataAsync, UseAsync } from '../../viewmodel/Net'
+import { getTutorialData } from '../../viewmodel/Net'
+import { getTutorialDataAsync, UseAsync } from '../../viewmodel/apiService'
+import { LogUtils } from '../../utils/LogUtils'
 
 @Component
 export struct TutorialPage {
@@ -12,7 +13,7 @@ export struct TutorialPage {
       getTutorialDataAsync().then((data: TutorialEntity[]) => {
         this.tutorialData = data
       }).catch((err: Error) => {
-        Log.error('getTutorialDataAsync failed', err.message)
+        LogUtils.error('getTutorialDataAsync failed', err.message)
       })
     } else
     getTutorialData().then((data: TutorialEntity[]) => {
